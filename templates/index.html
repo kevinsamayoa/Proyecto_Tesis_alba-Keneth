@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block titleNav %}
+  Mapa registros
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header ">
+          <table border="1" class="dataframe">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Texto</th>
+                <th>Imagen</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in data %}
+                <tr>
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.texto }}</td>
+                  <td><img src="{{ item.imagen }}" alt="" style="max-width: 25%;"></td>
+                  <td>{{ item.created_at }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-body ">
+          <div id="map" class="map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
