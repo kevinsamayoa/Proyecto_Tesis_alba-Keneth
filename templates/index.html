@@ -13,6 +13,11 @@
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Fecha</th>
+                <th>Ubicación</th>
+                <th>Departamento</th>
                 <th>Texto</th>
                 <th>Imagen</th>
                 <th>Created At</th>
@@ -22,6 +27,11 @@
               {% for item in data %}
                 <tr>
                   <td>{{ item.id }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.edad }}</td>
+                  <td>{{ item.fecha }}</td>
+                  <td>{{ item.ubicacion }}</td>
+                  <td>{{ item.departamento }}</td>
                   <td>{{ item.texto }}</td>
                   <td><img src="{{ item.imagen }}" alt="" style="max-width: 25%;"></td>
                   <td>{{ item.created_at }}</td>
