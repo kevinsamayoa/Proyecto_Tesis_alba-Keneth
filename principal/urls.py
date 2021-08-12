@@ -7,4 +7,5 @@ app_name = 'principal'
 
 urlpatterns = [
     path('', home, name='home'),
+    path('mapa', mapa, name='mapa'),
 ]

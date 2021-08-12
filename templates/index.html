@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block titleNav %}
-  Mapa registros
+  Index
 {% endblock %}
 
 {% block content %}
   <div class="row">
     <div class="col-md-12">
       <div class="card ">
-        <div class="card-header ">
+        <div class="card-header mb-4">
           <table border="1" class="dataframe">
             <thead>
               <tr>
@@ -18,6 +18,8 @@
                 <th>Fecha</th>
                 <th>Ubicación</th>
                 <th>Departamento</th>
+                <th>Longitud</th>
+                <th>Latitud</th>
                 <th>Texto</th>
                 <th>Imagen</th>
                 <th>Created At</th>
@@ -32,6 +34,8 @@
                   <td>{{ item.fecha }}</td>
                   <td>{{ item.ubicacion }}</td>
                   <td>{{ item.departamento }}</td>
+                  <td>{{ item.longitud }}</td>
+                  <td>{{ item.latitud }}</td>
                   <td>{{ item.texto }}</td>
                   <td><img src="{{ item.imagen }}" alt="" style="max-width: 25%;"></td>
                   <td>{{ item.created_at }}</td>
@@ -39,9 +43,6 @@
               {% endfor %}
             </tbody>
           </table>
-        </div>
-        <div class="card-body ">
-          <div id="map" class="map"></div>
         </div>
       </div>
     </div>

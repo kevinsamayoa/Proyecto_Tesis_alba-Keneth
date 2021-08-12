@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load l10n %}
+
+{% block titleNav %}
+  Mapa de casos
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header mb-4">
+          <div class="row my-4" style="background-color: white; border: solid #2f3551 1px; border-radius: 15px" id="casos_registrados">
+              <h2 class="mx-auto pb-2" style="line-height: 8rem;">Casos registrados</h2>
+              <div id="chartdiv"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block add_js %}
+  <script type="text/javascript">
+    // Themes
+    am4core.useTheme(am4themes_animated);
+
+    // Create map instance
+    var chart = am4core.create("chartdiv", am4maps.MapChart);
+
+    // Set map definition
+    chart.geodata = am4geodata_guatemalaHigh;
+
+    // Set projection
+    chart.projection = new am4maps.projections.Mercator();
+
+    // Center on the groups by default
+    chart.homeZoomLevel = 0;
+    chart.chartContainer.wheelable = false;
+    //chart.homeGeoPoint = { longitude: -90, latitude: 14 };
+
+    // Polygon series
+    var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+    polygonSeries.exclude = ["AQ"];
+    polygonSeries.useGeodata = true;
+    polygonSeries.nonScalingStroke = true;
+    polygonSeries.strokeOpacity = 0.5;
+    polygonSeries.dataFields.value = "value";
+    polygonSeries.descriptionElement.content = "prueba";
+
+    // Configure series
+    var polygonTemplate = polygonSeries.mapPolygons.template;
+    polygonTemplate.fill = am4core.color("#596060");
+
+    // Image series
+    var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+    var imageTemplate = imageSeries.mapImages.template;
+    imageTemplate.propertyFields.longitude = "longitude";
+    imageTemplate.propertyFields.latitude = "latitude";
+    imageTemplate.nonScaling = true;
+
+    // Creating a pin bullet
+    var pin = imageTemplate.createChild(am4plugins_bullets.PinBullet);
+
+    // Set what to display on rollover tooltip
+    pin.tooltipText = "{title}";
+    imageSeries.tooltip.pointerOrientation = "right";
+
+    // Configuring pin appearance
+    pin.background.fill = am4core.color("#74B266");;
+    pin.background.fillOpacity = 0.7;
+    pin.background.pointerAngle = 120;
+    pin.background.pointerBaseWidth = 15;
+
+    // Adding an image with its "href" attribute tied to values in data
+    pin.image = new am4core.Image();
+    pin.image.propertyFields.href = "imageURL";
+
+    // Creating a "heat rule" to modify "radius" of the bullet based
+    // on value in data
+    imageSeries.heatRules.push({
+      "target": pin.background,
+      "property": "radius",
+      "min": 10,
+      "max": 20,
+      "dataField": "value"
+    });
+
+    // Add a circle to pin base.
+    // Bullet is a Container, so we can add there anything.
+    var circle = pin.createChild(am4core.Ellipse);
+    circle.radius = 6;
+    circle.radiusY = 3;
+    circle.strokeWidth = 0;
+    circle.fillOpacity = 0.1;
+    circle.zIndex = -1;
+    // Create hover state to slightly increase radius
+    var hs = pin.background.states.create("hover");
+    hs.properties.radius = 50;
+
+    imageSeries.data = [
+    {% for caso in data %}
+      {
+      "latitude": {{caso.latitud|unlocalize }},
+      "longitude": {{caso.longitud|unlocalize }},
+      "imageURL": "{{caso.imagen}}",
+      "value": 20,
+      "title": "{{caso.nombre}}",
+      "edad": "{{caso.edad}}",
+      "direccion": "{{caso.ubicacion}}",
+      "departamento": "{{caso.departamento}}",
+      "fecha": "{{caso.fecha}}"
+      },
+    {% endfor %}
+    ];
+
+    chart.zoomControl = new am4maps.ZoomControl();
+
+    var button = chart.chartContainer.createChild(am4core.Button);
+    button.padding(5, 5, 5, 5);
+    button.align = "right";
+    button.marginRight = 15;
+    button.events.on("hit", function() {
+    chart.goHome();
+    });
+    button.icon = new am4core.Sprite();
+    button.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+
+    imageTemplate.events.on("hit", function(ev) {
+        chart.closeAllPopups();
+        chart.openPopup("<strong> Nombre: </strong>" + ev.target.dataItem.dataContext.title + "<br> <strong> Edad: </strong>" + ev.target.dataItem.dataContext.edad
+                        + "<br> <strong> Ubicacion: </strong>" + ev.target.dataItem.dataContext.direccion + "<br> <strong> Departamento: </strong>" + ev.target.dataItem.dataContext.departamento + "<br> <strong> Fecha de desaparcion: </strong>" + ev.target.dataItem.dataContext.fecha + "<br>"
+                        + "<br> <strong> Imagen: </strong> " + "<br> <img src=\"" + ev.target.dataItem.dataContext.imageURL + "\" alt=\"" + ev.target.dataItem.dataContext.title + "\" style=\"max-width: 25%;\" >");
+    });
+</script>
+
+{% endblock %}

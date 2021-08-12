@@ -5,6 +5,9 @@ import re
 #Django
 from django.shortcuts import render
 
+#own
+from .utils import get_data
+
 #3rd
 import json
 import tweepy
@@ -55,6 +58,8 @@ def home(request):
     tweet_text['fecha'] = tweet_text['texto'].apply(lambda x: get_data(x).get('fecha'))
     tweet_text['ubicacion'] = tweet_text['texto'].apply(lambda x: get_data(x).get('ubicacion'))
     tweet_text['departamento'] = tweet_text['texto'].apply(lambda x: get_data(x).get('departamento'))
+    tweet_text['longitud'] = tweet_text['texto'].apply(lambda x: get_data(x).get('longitud'))
+    tweet_text['latitud'] = tweet_text['texto'].apply(lambda x: get_data(x).get('latitud'))
 
     if 'acutal_tweets' in locals():
         acutal_tweets['nombre'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('nombre'))
@@ -62,6 +67,8 @@ def home(request):
         acutal_tweets['fecha'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('fecha'))
         acutal_tweets['ubicacion'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('ubicacion'))
         acutal_tweets['departamento'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('departamento'))
+        acutal_tweets['longitud'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('longitud'))
+        acutal_tweets['latitud'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('latitud'))
         result = tweet_text.append(acutal_tweets)
         result.to_pickle("tweets.pkl")
         json_records = result.reset_index().to_json(orient ='records', date_format = 'iso')
@@ -78,98 +85,19 @@ def home(request):
 
     return render(request, 'index.html', context)
 
-def get_data(data):
-    try:
-        pattern = r"\s+"
-        tweet_text_ = remove_emojis(data.replace('|', '')) # Remover emojis
-        tweet_text_array = re.split(pattern, tweet_text_)
-        tweet_text_array.pop(0) # Eliminar primer item que contiene AlertaAlbaKenneth
-        dict_res = get_variables(tweet_text_array)
-        return dict_res
-    except Exception as e:
-        dict_res = {
-            "nombre": None,
-            "edad": None,
-            "fecha": None,
-            "ubicacion": None,
-            "departamento": None,
-        }
-        return dict_res
-
-def remove_emojis(data):
-    emoji = re.compile("["
-        u"\U0001F600-\U0001F64F"  # emoticons
-        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-        u"\U0001F680-\U0001F6FF"  # transport & map symbols
-        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-        u"\U00002500-\U00002BEF"  # chinese char
-        u"\U00002702-\U000027B0"
-        u"\U00002702-\U000027B0"
-        u"\U000024C2-\U0001F251"
-        u"\U0001f926-\U0001f937"
-        u"\U00010000-\U0010ffff"
-        u"\u2640-\u2642"
-        u"\u2600-\u2B55"
-        u"\u200d"
-        u"\u23cf"
-        u"\u23e9"
-        u"\u231a"
-        u"\ufe0f"  # dingbats
-        u"\u3030"
-                      "]+", re.UNICODE)
-    return re.sub(emoji, '', data)
-
-def get_variables(data):
-    nombre = ''
-    edad = 'sin edad'
-    fecha = ''
-    ubicacion = ''
-    departamento = ''
-    flag_edad = True
-    texto = " ".join(data)
-
-    for x in range(len(data)):
-        if data[x][-1] == ',':
-            nombre += data[x] + ' '
-            break
-        elif data[x][-1] == '.':
-            flag_edad = False
-            break
-        elif data[x] == 'de' and data[x+1].isdigit():
-            break
-        nombre += data[x] + ' '
-
-    texto_sin_nombre = texto.replace(nombre, '')
-
-    if flag_edad:
-        texto_sin_nombre = texto_sin_nombre.split('.')
-        edad = texto_sin_nombre[0]
-        texto_sin_nombre.pop(0)
-        texto = " ".join(texto_sin_nombre)
+def mapa(request):
+    if path_python.exists("tweets.pkl"):
+        acutal_tweets = pd.read_pickle("tweets.pkl")
+        acutal_tweets = acutal_tweets.dropna()
     else:
-        texto = texto_sin_nombre
+        acutal_tweets = pd.DataFrame(data=[], columns=['id', 'texto', 'imagen', 'created_at', 'nombre', 'edad', 'fecha', 'ubicacion', 'departamento', 'longitud', 'latitud'])
 
-    texto = texto.split(',')
-    fecha = texto[0]
-    texto.pop(0)
-    texto = " ".join(texto)
-    texto = texto.split('Comparte')
-    ubicacion = texto[0]
-    lugares = [item for item in ubicacion.split("  ") if item != '']
-    if len(lugares) == 1:
-        lugares = [item for item in ubicacion.split(" ") if item != '']
-    departamento = lugares[-1]
-    lugares.pop(-1)
-    ubicacion = ", ".join(lugares)
-    nombre = nombre.replace(",", "")
+    json_records = acutal_tweets.reset_index().to_json(orient ='records', date_format = 'iso')
+    data = []
+    data = json.loads(json_records)
 
-    dict_res = {
-        "nombre": nombre.strip(),
-        "edad": edad.strip(),
-        "fecha": fecha.strip(),
-        "ubicacion": ubicacion.strip(),
-        "departamento": departamento.strip(),
+    context = {
+        'data': data
     }
-
-    return dict_res
+    return render(request, 'mapa.html', context)
 
