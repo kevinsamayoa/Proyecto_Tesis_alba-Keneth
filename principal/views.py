@@ -30,6 +30,7 @@ def home(request):
 
     if path_python.exists("tweets.pkl"):
         acutal_tweets = pd.read_pickle("tweets.pkl")
+        acutal_tweets = acutal_tweets.dropna()
         last_id = acutal_tweets.iloc[0][['id']].values[0]
 
         tweets = tweepy.Cursor(
@@ -48,6 +49,7 @@ def home(request):
 
     final_tweets = [[tweet.id, tweet.full_text, tweet.entities['media'][0]['media_url_https'], tweet.created_at] for tweet in tweets]
     tweet_text = pd.DataFrame(data=final_tweets, columns=['id', 'texto', 'imagen', 'created_at'])
+    tweet_text = tweet_text.dropna()
     tweet_text['nombre'] = tweet_text['texto'].apply(lambda x: get_data(x).get('nombre'))
     tweet_text['edad'] = tweet_text['texto'].apply(lambda x: get_data(x).get('edad'))
     tweet_text['fecha'] = tweet_text['texto'].apply(lambda x: get_data(x).get('fecha'))
@@ -61,7 +63,6 @@ def home(request):
         acutal_tweets['ubicacion'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('ubicacion'))
         acutal_tweets['departamento'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('departamento'))
         result = tweet_text.append(acutal_tweets)
-        print(tweet_text)
         result.to_pickle("tweets.pkl")
         json_records = result.reset_index().to_json(orient ='records', date_format = 'iso')
     else:
@@ -78,12 +79,22 @@ def home(request):
     return render(request, 'index.html', context)
 
 def get_data(data):
-    pattern = r"\s+"
-    tweet_text_ = remove_emojis(data.replace('|', '')) # Remover emojis
-    tweet_text_array = re.split(pattern, tweet_text_)
-    tweet_text_array.pop(0) # Eliminar primer item que contiene AlertaAlbaKenneth
-    dict_res = get_variables(tweet_text_array)
-    return dict_res
+    try:
+        pattern = r"\s+"
+        tweet_text_ = remove_emojis(data.replace('|', '')) # Remover emojis
+        tweet_text_array = re.split(pattern, tweet_text_)
+        tweet_text_array.pop(0) # Eliminar primer item que contiene AlertaAlbaKenneth
+        dict_res = get_variables(tweet_text_array)
+        return dict_res
+    except Exception as e:
+        dict_res = {
+            "nombre": None,
+            "edad": None,
+            "fecha": None,
+            "ubicacion": None,
+            "departamento": None,
+        }
+        return dict_res
 
 def remove_emojis(data):
     emoji = re.compile("["
@@ -145,6 +156,8 @@ def get_variables(data):
     texto = texto.split('Comparte')
     ubicacion = texto[0]
     lugares = [item for item in ubicacion.split("  ") if item != '']
+    if len(lugares) == 1:
+        lugares = [item for item in ubicacion.split(" ") if item != '']
     departamento = lugares[-1]
     lugares.pop(-1)
     ubicacion = ", ".join(lugares)
