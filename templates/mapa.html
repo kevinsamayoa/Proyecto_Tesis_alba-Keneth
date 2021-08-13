@@ -129,9 +129,14 @@
 
     imageTemplate.events.on("hit", function(ev) {
         chart.closeAllPopups();
-        chart.openPopup("<strong> Nombre: </strong>" + ev.target.dataItem.dataContext.title + "<br> <strong> Edad: </strong>" + ev.target.dataItem.dataContext.edad
-                        + "<br> <strong> Ubicacion: </strong>" + ev.target.dataItem.dataContext.direccion + "<br> <strong> Departamento: </strong>" + ev.target.dataItem.dataContext.departamento + "<br> <strong> Fecha de desaparcion: </strong>" + ev.target.dataItem.dataContext.fecha + "<br>"
-                        + "<br> <strong> Imagen: </strong> " + "<br> <img src=\"" + ev.target.dataItem.dataContext.imageURL + "\" alt=\"" + ev.target.dataItem.dataContext.title + "\" style=\"max-width: 25%;\" >");
+        chart.openPopup(
+          "<strong> Nombre: </strong>" + ev.target.dataItem.dataContext.title
+          + "<br> <strong> Edad: </strong>" + ev.target.dataItem.dataContext.edad
+          + "<br> <strong> Ubicacion: </strong>" + ev.target.dataItem.dataContext.direccion
+          + "<br> <strong> Departamento: </strong>" + ev.target.dataItem.dataContext.departamento
+          + "<br> <strong> Fecha de desaparcion: </strong>" + ev.target.dataItem.dataContext.fecha + "<br>"
+          + "<br> <strong> Imagen: </strong> " + "<br> <img src=\"" + ev.target.dataItem.dataContext.imageURL + "\" alt=\"" + ev.target.dataItem.dataContext.title + "\" style=\"max-width: 25%;\" >"
+        );
     });
 </script>
 

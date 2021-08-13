@@ -3,6 +3,9 @@ import datetime
 import re
 import random
 
+#Own
+from .data import get_coordenadas
+
 #3rd
 import json
 import tweepy
@@ -11,111 +14,11 @@ import os.path
 from os import path as path_python
 
 def get_longitud_latitud(departamento):
-    deparamentos = {
-        'Alta Verapaz': {
-            'latitud': 15.47083,
-            'longitud': -90.37083,
-        },
-        'Baja Verapaz': {
-            'latitud': 15.10278,
-            'longitud': -90.31806,
-        },
-        'Chimaltenango  ': {
-            'latitud': 14.66111,
-            'longitud': -90.81944,
-        },
-        'Chiquimula': {
-            'latitud': 14.8,
-            'longitud': -89.54583,
-        },
-        'Escuintla': {
-            'latitud': 14.3009,
-            'longitud': -90.78581,
-        },
-        'Guatemala': {
-            'latitud': 15.783471,
-            'longitud':  -90.230759,
-        },
-        'Huehuetenango': {
-            'latitud': 15.31918,
-            'longitud': -91.47241,
-        },
-        'Izabal': {
-            'latitud': 15.5,
-            'longitud': -89,
-        },
-        'Jalapa': {
-            'latitud': 14.63472,
-            'longitud': -89.98889,
-        },
-        'Jutiapa': {
-            'latitud': 14.29167,
-            'longitud': -89.89583,
-        },
-        'Petén': {
-            'latitud': 16.7885,
-            'longitud': -90.11698,
-        },
-        'El Progreso': {
-            'latitud': 14.35,
-            'longitud': -89.85,
-        },
-        'Quetzaltenango': {
-            'latitud': 14.83472,
-            'longitud': -91.51806,
-        },
-        'Quiché': {
-            'latitud': 15.03085,
-            'longitud': -91.14871,
-        },
-        'Retalhuleu': {
-            'latitud': 14.533333,
-            'longitud': -91.683333,
-        },
-        'Sacatepéquez': {
-            'latitud': 14.718890,
-            'longitud': -90.6441700,
-        },
-        'San Marcos': {
-            'latitud': 14.96389,
-            'longitud': -91.79444,
-        },
-        'Santa Rosa': {
-            'latitud': 14.38806,
-            'longitud': -90.29556,
-        },
-        'Sololá': {
-            'latitud': 14.77222,
-            'longitud': -91.18333,
-        },
-        'Suchitepéquez': {
-            'latitud': 14.5333300,
-            'longitud': -91.4166700,
-        },
-        'Totonicapán': {
-            'latitud': 14.91167,
-            'longitud': -91.36111,
-        },
-        'Zacapa': {
-            'latitud': 14.97222,
-            'longitud': -89.53056,
-        },
-    }
-
-    actual = deparamentos.get('Guatemala')
-
-    if departamento in deparamentos.keys():
-        actual = deparamentos.get(departamento)
-
-    number_latitud = random.uniform(-0.01, 0.24)
-    number_longitud = random.uniform(-0.01, 0.24)
-
-    latitud = actual.get('latitud') + number_latitud
-    longitud = actual.get('longitud') + number_longitud
+    coordenas = get_coordenadas(departamento);
 
     data = {
-        'latitud': latitud,
-        'longitud': longitud
+        'longitud': coordenas[0],
+        'latitud': coordenas[1],
     }
 
     return data
