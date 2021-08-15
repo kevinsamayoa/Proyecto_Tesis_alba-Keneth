@@ -4742,7 +4742,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .card-chart .chart-area {
-  height: 190px;
+  height: calc(30% + 30px);;
   width: calc(100% + 30px);
   margin-left: -15px;
   margin-right: -15px;

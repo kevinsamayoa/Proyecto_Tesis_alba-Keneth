@@ -68,7 +68,7 @@ def remove_emojis(data):
 
 def get_variables(data):
     nombre = ''
-    edad = 'sin edad'
+    edad = 0
     fecha = ''
     ubicacion = ''
     departamento = ''
@@ -92,6 +92,13 @@ def get_variables(data):
         texto_sin_nombre = texto_sin_nombre.split('.')
         edad = texto_sin_nombre[0].replace('de', '')
         edad = edad.replace('edad', '')
+        if 'años' in edad:
+            edad = edad.replace('años', '')
+        elif 'meses' in edad:
+            edad = edad.replace('meses', '')
+            edad = int(edad)/12
+        else:
+            edad = 0
         texto_sin_nombre.pop(0)
         texto = " ".join(texto_sin_nombre)
     else:
@@ -117,7 +124,7 @@ def get_variables(data):
 
     dict_res = {
         "nombre": nombre.strip(),
-        "edad": edad.strip(),
+        "edad": float(edad),
         "fecha": fecha.strip(),
         "ubicacion": ubicacion.strip(),
         "departamento": departamento.strip(),

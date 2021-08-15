@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load l10n %}
+
+{% block titleNav %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card card-chart">
+        <div class="card-header">
+          <div class="card-category">
+            Mayores alertas
+          </div>
+          <div class="card-title">
+            Por departamento
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-area" >
+            <canvas id="departamentoChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card card-chart">
+        <div class="card-header">
+          <div class="card-category">
+            Mayores alertas
+          </div>
+          <div class="card-title">
+            Por edad en años
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="departamentoChart2"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card card-chart">
+        <div class="card-header">
+          <div class="card-category">
+            Mayores alertas
+          </div>
+          <div class="card-title">
+            Por departamento
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-area">
+            <canvas id="departamentoChart1"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block add_js %}
+<script>
+  var ctx = document.getElementById('departamentoChart');
+  var departamentoChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: {{ top_cinco_pais|safe }},
+          datasets: [{
+              data: {{ top_cinco_count|safe }},
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.8)',
+                  'rgba(54, 162, 235, 0.8)',
+                  'rgba(255, 206, 86, 0.8)',
+                  'rgba(75, 192, 192, 0.8)',
+                  'rgba(153, 102, 255, 0.8)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: false,
+          }
+        }
+      },
+  });
+</script>
+
+<script>
+  var ctx = document.getElementById('departamentoChart1');
+  var departamentoChart2 = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: {{ top_cinco_pais|safe }},
+          datasets: [{
+              data: {{ top_cinco_count|safe }},
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.8)',
+                  'rgba(54, 162, 235, 0.8)',
+                  'rgba(255, 206, 86, 0.8)',
+                  'rgba(75, 192, 192, 0.8)',
+                  'rgba(153, 102, 255, 0.8)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: false,
+          }
+        }
+      },
+  });
+</script>
+
+<script>
+  var ctx = document.getElementById('departamentoChart2');
+  var departamentoChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: {{ top_cinco_edad|safe }},
+          datasets: [{
+              data: {{ top_cinco_edad_count|safe }},
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.8)',
+                  'rgba(54, 162, 235, 0.8)',
+                  'rgba(255, 206, 86, 0.8)',
+                  'rgba(75, 192, 192, 0.8)',
+                  'rgba(153, 102, 255, 0.8)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: false,
+          }
+        }
+      },
+  });
+</script>
+{% endblock %}

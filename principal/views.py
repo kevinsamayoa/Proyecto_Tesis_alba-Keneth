@@ -27,10 +27,6 @@ def home(request):
     api = tweepy.API(auth)
 
     # public_tweets = api.home_timeline(1)
-
-    today = datetime.date.today()
-    yesterday= today - datetime.timedelta(days=1)
-
     if path_python.exists("tweets.pkl"):
         acutal_tweets = pd.read_pickle("tweets.pkl")
         acutal_tweets = acutal_tweets.dropna()
@@ -48,11 +44,20 @@ def home(request):
             api.search,
             q="from:alba_keneth #AlertaAlbaKeneth -filter:retweets",
             tweet_mode='extended',
-            lang="es").items(100)
+            lang="es").items(200)
 
-    final_tweets = [[tweet.id, tweet.full_text, tweet.entities['media'][0]['media_url_https'], tweet.created_at] for tweet in tweets]
+    print(tweets)
+
+    final_tweets = []
+
+    for tweet in tweets:
+        if 'media' in tweet.entities:
+            final_tweets.append([tweet.id, tweet.full_text, tweet.entities['media'][0]['media_url_https'], tweet.created_at])
+
     tweet_text = pd.DataFrame(data=final_tweets, columns=['id', 'texto', 'imagen', 'created_at'])
     tweet_text = tweet_text.dropna()
+
+    # Obtener los datos importantes del texto
     tweet_text['nombre'] = tweet_text['texto'].apply(lambda x: get_data(x).get('nombre'))
     tweet_text['edad'] = tweet_text['texto'].apply(lambda x: get_data(x).get('edad'))
     tweet_text['fecha'] = tweet_text['texto'].apply(lambda x: get_data(x).get('fecha'))
@@ -62,6 +67,7 @@ def home(request):
     tweet_text['latitud'] = tweet_text['texto'].apply(lambda x: get_data(x).get('latitud'))
 
     if 'acutal_tweets' in locals():
+        # Obtener los datos importantes del texto
         acutal_tweets['nombre'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('nombre'))
         acutal_tweets['edad'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('edad'))
         acutal_tweets['fecha'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('fecha'))
@@ -69,6 +75,7 @@ def home(request):
         acutal_tweets['departamento'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('departamento'))
         acutal_tweets['longitud'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('longitud'))
         acutal_tweets['latitud'] = acutal_tweets['texto'].apply(lambda x: get_data(x).get('latitud'))
+
         result = tweet_text.append(acutal_tweets)
         result.to_pickle("tweets.pkl")
         json_records = result.reset_index().to_json(orient ='records', date_format = 'iso')
@@ -101,3 +108,26 @@ def mapa(request):
     }
     return render(request, 'mapa.html', context)
 
+def dashboard(request):
+    if path_python.exists("tweets.pkl"):
+        acutal_tweets = pd.read_pickle("tweets.pkl")
+        acutal_tweets = acutal_tweets.dropna()
+    else:
+        acutal_tweets = pd.DataFrame(data=[], columns=['id', 'texto', 'imagen', 'created_at', 'nombre', 'edad', 'fecha', 'ubicacion', 'departamento', 'longitud', 'latitud'])
+
+    top_cinco = acutal_tweets.groupby(by=["departamento"]).count()['id'].sort_values(ascending=False).head(5)
+    top_cinco_pais = top_cinco.index.tolist()
+    top_cinco_count = top_cinco.values.tolist()
+
+    top_cincos_edad = acutal_tweets.groupby(by=["edad"]).count()['id'].sort_values(ascending=False).head(5)
+
+    top_cinco_edad = top_cincos_edad.index.tolist()
+    top_cinco_edad_count = top_cincos_edad.values.tolist()
+
+    context = {
+        'top_cinco_pais': top_cinco_pais,
+        'top_cinco_count': top_cinco_count,
+        'top_cinco_edad': top_cinco_edad,
+        'top_cinco_edad_count': top_cinco_edad_count,
+    }
+    return render(request, 'dashboard.html', context)
