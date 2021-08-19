@@ -4742,10 +4742,21 @@ Created using IcoMoon - icomoon.io
 }
 
 .card-chart .chart-area {
-  height: calc(30% + 30px);;
-  width: calc(100% + 30px);
-  margin-left: -15px;
-  margin-right: -15px;
+  position: relative;
+  margin: auto;
+  height: 34vh;
+  width: 80vw;
+}
+
+.card-chart .chart-area-50 {
+  position: relative;
+  margin: auto;
+  height: 34vh;
+  width: 40vw;
+}
+
+canvas {
+  border: 1px dotted red;
 }
 
 .card-chart .card-footer {
