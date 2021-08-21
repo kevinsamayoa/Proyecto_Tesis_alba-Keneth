@@ -9,9 +9,10 @@
     <div class="col-md-12">
       <div class="card ">
         <div class="card-header mb-4">
-          <table border="1" class="table-responsive">
+          <table class="table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Edad</th>
@@ -28,6 +29,7 @@
             <tbody>
               {% for item in data %}
                 <tr>
+                  <td>{{ forloop.counter }}</td>
                   <td>{{ item.id }}</td>
                   <td>{{ item.nombre }}</td>
                   <td>{{ item.edad }}</td>

@@ -131,3 +131,6 @@ def dashboard(request):
         'top_cinco_edad_count': top_cinco_edad_count,
     }
     return render(request, 'dashboard.html', context)
+
+def manual(request):
+    return render(request, 'manual.html')

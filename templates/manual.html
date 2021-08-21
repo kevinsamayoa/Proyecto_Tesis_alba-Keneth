@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load l10n %}
+
+{% block titleNav %}
+  Manual de pagina oficial
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h2>Sitio oficial del sistema Alba Keneth</h2>
+          <blockquote class="blockquote mb-0">
+            <p>
+              La página oficial del sistema es: <strong><a href="https://www.albakeneth.gob.gt/">https://www.albakeneth.gob.gt/</a></strong>, dicha página permitirá buscar una alerta,
+              activar o desactivar una alerta e informar a la población en que consiste el sistema, se podrá encontrar estadísticas
+              de los años anteriores en la unidad operativa del sistema, noticias, todas las alertas activas de menores desaparecidos,
+              medios de contacto para iniciar la búsqueda del niño, niña o adolescente.
+            </p>
+            <p>Proceso de activación y desactivación de una alerta:</p>
+            <p>
+              Para activar una alerta se debe tener el conocimiento de la desaparición o sustracción del menor,
+              además presentar de manera inmediata una denuncia.
+            </p>
+            <p>
+              La página invita a que se haga una denuncia en subestaciones de policía, oficinas del ministerio público o que
+              se realice una llamada telefónica al número 1546 o al 110 de la Policía Nacional Civil, luego permite generar el reporte desde el propio sistema.
+            </p>
+            <p>
+              En la plataforma se despliegan dos formularios, uno en donde se colocarán los datos del desaparecido y el otro los datos del denunciante.
+            </p>
+            <p>Datos del menor desaparecido:</p>
+            <ul>
+              <li>Nombres</li>
+              <li>Apellidos</li>
+              <li>Años </li>
+              <li>Meses</li>
+              <li>Dirección</li>
+              <li>Lugar de desaparición</li>
+              <li>Fecha de desaparición</li>
+              <li>Sexo</li>
+              <li>Fotografia del desaparecido</li>
+            </ul>
+            <p>Datos del denunciante:</p>
+            <ul>
+              <li>Nombres</li>
+              <li>Apellidos</li>
+              <li>Nombres</li>
+              <li>Nombres</li>
+              <li>Email</li>
+              <li>Parentesco con el desaparecido</li>
+              <li>Edad</li>
+              <li>Dirección</li>
+              <li>Sexo</li>
+              <li>Relato de la desaparición</li>
+            </ul>
+            <p>
+              Luego de haber llenado ambos formularios la plataforma hace una advertencia en donde le indica al usuario que
+              toda la información descrita debe ser verídica, el usuario debe aceptar estas condiciones y el sistema envía el formulario,
+              la información se envía de manera inmediata a la unidad operativa, en donde se comunicaran con el denunciante lo más pronto posible.
+            </p>
+            <h2>Desactivación de alertas</h2>
+            <p>
+              Para desactivar una alerta se debe informar inmediatamente a las autoridades que tomaron la denuncia del hallazgo
+              del menor de tal modo que puedan alertar a la unidad operativa del sistema Alba-Keneth, adicional la persona
+              encargada deberá presentarse con el niño, niña o adolescente al lugar en donde presentó su denuncia, documento
+              de identificación personal del adulto responsable, certificación de nacimiento del menor y toda la documentación
+              judicial que acredite al encargado como el responsable de la custodia del menor.
+            </p>
+            <p>
+              La plataforma de alertas desplegará los mismos formularios que fueron enviados para la activación de la alerta
+              en donde se tendrán que llenar con los datos proporcionados, con la diferencia que en este pasó el sistema solicitará
+              el número de alerta otorgado al adulto responsable al momento de haber activado la alerta de desaparición.
+            </p>
+            <p>
+              Se hará el envío de formularios, el sistema hará las validaciones correspondientes para comprobar que la información
+              ingresada si coincida con alguna alerta de desaparición activa y automáticamente dará de baja la información
+              del niño, niña o adolescente que haya sido sustraído o desaparecido.
+            </p>
+            <footer class="blockquote-footer">Alba Keneth <cite title="Source Title">Guatemala, guatemala</cite></footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
