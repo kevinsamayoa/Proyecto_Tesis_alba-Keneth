@@ -124,7 +124,7 @@ def get_variables(data):
 
     dict_res = {
         "nombre": nombre.strip(),
-        "edad": float(edad),
+        "edad": round(float(edad), 2),
         "fecha": fecha.strip(),
         "ubicacion": ubicacion.strip(),
         "departamento": departamento.strip(),
