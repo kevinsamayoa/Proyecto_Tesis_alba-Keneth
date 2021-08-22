@@ -39,7 +39,11 @@
                   <td>{{ item.longitud }}</td>
                   <td>{{ item.latitud }}</td>
                   <td>{{ item.texto }}</td>
-                  <td><img src="{{ item.imagen }}" alt="" style="max-width: 25%;"></td>
+                  <td>
+                    <a href="{{ item.imagen }}" data-lightbox="{{ item.id }}">
+                      <img src="{{ item.imagen }}" alt="" class="img-fluid img-thumbnail">
+                    </a>
+                  </td>
                   <td>{{ item.created_at }}</td>
                 </tr>
               {% endfor %}
@@ -50,3 +54,7 @@
     </div>
   </div>
 {% endblock %}
+
+{% block add_js %}
+
+{% endblock add_js %}
