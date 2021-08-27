@@ -46,8 +46,6 @@ def home(request):
             tweet_mode='extended',
             lang="es").items(200)
 
-    print(tweets)
-
     final_tweets = []
 
     for tweet in tweets:
