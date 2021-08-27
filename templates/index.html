@@ -30,7 +30,7 @@
               {% for item in data %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td>{{ item.id }}</td>
+                  <td>{{ item.tweet_id }}</td>
                   <td>{{ item.nombre }}</td>
                   <td>{{ item.edad }}</td>
                   <td>{{ item.fecha }}</td>
@@ -38,10 +38,10 @@
                   <td>{{ item.departamento }}</td>
                   <td>{{ item.longitud }}</td>
                   <td>{{ item.latitud }}</td>
-                  <td>{{ item.texto }}</td>
+                  <td>{{ item.texto_tweet }}</td>
                   <td>
-                    <a href="{{ item.imagen }}" data-lightbox="{{ item.id }}">
-                      <img src="{{ item.imagen }}" alt="" class="img-fluid img-thumbnail">
+                    <a href="{{ item.imagen_link }}" data-lightbox="{{ item.id }}">
+                      <img src="{{ item.imagen_link }}" alt="" class="img-fluid img-thumbnail">
                     </a>
                   </td>
                   <td>{{ item.created_at }}</td>

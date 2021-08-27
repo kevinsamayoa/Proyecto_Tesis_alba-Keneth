@@ -29,7 +29,7 @@ def get_data(data):
         tweet_text_ = remove_emojis(data.replace('|', '')) # Remover emojis
         tweet_text_array = re.split(pattern, tweet_text_)
         tweet_text_array.pop(0) # Eliminar primer item que contiene AlertaAlbaKenneth
-        dict_res = get_variables(tweet_text_array)
+        dict_res = get_variables(tweet_text_array, tweet_text_)
         return dict_res
     except Exception as e:
         dict_res = {
@@ -40,6 +40,7 @@ def get_data(data):
             "departamento": None,
             "longitud": None,
             "latitud": None,
+            "texto": None,
         }
         return dict_res
 
@@ -66,7 +67,7 @@ def remove_emojis(data):
                       "]+", re.UNICODE)
     return re.sub(emoji, '', data)
 
-def get_variables(data):
+def get_variables(data, texto_sin_emojis):
     nombre = ''
     edad = 0
     fecha = ''
@@ -130,6 +131,7 @@ def get_variables(data):
         "departamento": departamento.strip(),
         "longitud": geo_data.get("longitud"),
         "latitud": geo_data.get("latitud"),
+        "texto": texto_sin_emojis,
     }
 
     return dict_res
