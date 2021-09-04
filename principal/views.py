@@ -26,8 +26,8 @@ def home(request):
     api = tweepy.API(auth)
     alertas = Alertas.objects.all()
 
-    if len(alertas) > 0:
-        last_id = alertas.last().tweet_id
+    if alertas.count() > 0:
+        last_id = alertas.order_by('-tweet_id').first().tweet_id
         tweets = tweepy.Cursor(
             api.search,
             q="from:alba_keneth #AlertaAlbaKeneth -filter:retweets",
