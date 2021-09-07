@@ -1,20 +1,14 @@
-#Python
-import datetime
-import re
-
 #Django
 from django.shortcuts import render
+from django.db.models import Q
 
 #own
 from .utils import get_data
 from .models import *
 
 #3rd
-import json
 import tweepy
 import pandas as pd
-import os.path
-from os import path as path_python
 
 def home(request):
     consumer_key = "2lfFxUOsxNjLPMWiaWeP8kpk6"
@@ -77,8 +71,21 @@ def home(request):
         except Exception as e:
             print(e)
 
+    busqueda = request.GET.get('search')
+    alertas_final = Alertas.objects.all()
+
+    if  busqueda:
+        alertas_final = Alertas.objects.filter(
+            Q(tweet_id__icontains=busqueda) |
+            Q(texto_tweet__icontains=busqueda) |
+            Q(nombre__icontains=busqueda) |
+            Q(edad__icontains=busqueda) |
+            Q(ubicacion__icontains=busqueda) |
+            Q(departamento__icontains=busqueda)
+        )    
+
     context = {
-        'data': alertas
+        'data': alertas_final
     }
 
     return render(request, 'index.html', context)
