@@ -1,3 +1,6 @@
+#Python
+import datetime
+
 #Django
 from django.shortcuts import render
 from django.db.models import Q
@@ -99,7 +102,23 @@ def mapa(request):
     return render(request, 'mapa.html', context)
 
 def dashboard(request):
+    current_time = datetime.datetime.now()
+    tipo = request.GET.get('tipo', None)
     alertas = Alertas.objects.all()
+
+    if tipo == "1":
+        alertas = Alertas.objects.filter(
+            created_at__month = current_time.month
+        )
+    elif tipo == "2":
+        alertas = Alertas.objects.filter(
+            created_at__month = (current_time.month - 1)
+        )
+    elif tipo == "3":
+        alertas = Alertas.objects.filter(
+            created_at__year = current_time.year
+        )
+
     acutal_tweets = pd.DataFrame(list(alertas.values('tweet_id', 'texto_tweet', 'imagen_link', 'created_at', 'nombre', 'edad', 'fecha', 'ubicacion', 'departamento', 'longitud', 'latitud')))
     top_cinco = acutal_tweets.groupby(by=["departamento"]).count()['tweet_id'].sort_values(ascending=False).head(5)
     top_cinco_pais = top_cinco.index.tolist()

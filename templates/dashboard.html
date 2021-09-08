@@ -8,6 +8,28 @@
 
 {% block content %}
   <div class="row">
+    <div class="col">
+      <div class="card">
+        <form action="{% url 'principal:dashboard' %}" method ="get" class="form-inline float-right mr-5">
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="tipo" class="sr-only">Fecha</label>
+            <select id="tipo" name="tipo" class="form-control">
+              <option selected disabled>Escoger</option>
+              <option value="1">Mes actual</option>
+              <option value="2">Mes anterior</option>
+              <option value="3">Ano actual</option>
+            </select>
+          </div>
+          <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary btn-fab btn-icon btn-round">
+              <i class="now-ui-icons ui-1_zoom-bold"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-lg-6">
       <div class="card card-chart">
         <div class="card-header">
