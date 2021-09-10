@@ -14,6 +14,7 @@ import tweepy
 import pandas as pd
 
 def home(request):
+    """Aca se trabaja la pantalla principal conectandose a la api de twitter"""
     consumer_key = "2lfFxUOsxNjLPMWiaWeP8kpk6"
     consumer_secret = "qIPsGoHVfolDk6qjbVEvhEa5opXYQD6xM4lMxWmT4YOC0A7Cem"
     access_token = "1245440519519567876-jxHGeo5ybqSTwxDDjUF7WK4BTRGXgW"
@@ -85,7 +86,7 @@ def home(request):
             Q(edad__icontains=busqueda) |
             Q(ubicacion__icontains=busqueda) |
             Q(departamento__icontains=busqueda)
-        )    
+        )
 
     context = {
         'data': alertas_final
@@ -94,6 +95,7 @@ def home(request):
     return render(request, 'index.html', context)
 
 def mapa(request):
+    """Obtiene las alertas actuales para mostrarlas en el mapa"""
     alertas = Alertas.objects.all()
 
     context = {
@@ -102,6 +104,7 @@ def mapa(request):
     return render(request, 'mapa.html', context)
 
 def dashboard(request):
+    """Trabaja la data para mostrar el dashboar y filtrar por lo escogido"""
     current_time = datetime.datetime.now()
     tipo = request.GET.get('tipo', None)
     alertas = Alertas.objects.all()
@@ -137,4 +140,5 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 def manual(request):
+    """Template simple para mostrar el manual"""
     return render(request, 'manual.html')

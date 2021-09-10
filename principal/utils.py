@@ -1,19 +1,14 @@
 #Python
-import datetime
 import re
-import random
 
 #Own
 from .data import get_coordenadas
 
 #3rd
-import json
-import tweepy
-import pandas as pd
-import os.path
 from os import path as path_python
 
 def get_longitud_latitud(departamento):
+    """Pasa a un diccionario las longitudes y latitudes de cada departametno"""
     coordenas = get_coordenadas(departamento);
 
     data = {
@@ -24,6 +19,7 @@ def get_longitud_latitud(departamento):
     return data
 
 def get_data(data):
+    """Envia la data ya procesada"""
     try:
         pattern = r"\s+"
         tweet_text_ = remove_emojis(data.replace('|', '')) # Remover emojis
@@ -45,6 +41,7 @@ def get_data(data):
         return dict_res
 
 def remove_emojis(data):
+    """Remove los emojis del texto"""
     emoji = re.compile("["
         u"\U0001F600-\U0001F64F"  # emoticons
         u"\U0001F300-\U0001F5FF"  # symbols & pictographs
@@ -68,6 +65,7 @@ def remove_emojis(data):
     return re.sub(emoji, '', data)
 
 def get_variables(data, texto_sin_emojis):
+    """Obtiene las variables para guardar en la BD"""
     nombre = ''
     edad = 0
     fecha = ''

@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Alertas(models.Model):
+    """Modelo y tipo de campo para tabla Alertas"""
     tweet_id = models.CharField(max_length=100)
     texto_tweet = models.TextField()
     nombre = models.CharField(max_length=100)
