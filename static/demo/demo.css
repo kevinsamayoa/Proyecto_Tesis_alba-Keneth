@@ -1,3 +1,7 @@
+.button-transparent {
+  background-image: none;
+}
+
 .tim-row {
   margin-bottom: 20px;
 }
